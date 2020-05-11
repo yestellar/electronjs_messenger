@@ -1,0 +1,32 @@
+{
+  "name": "electron-messenger",
+  "version": "1.0.0",
+  "description": "electron-based application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "author": "Dmytro Smirnov",
+  "license": "ISC",
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron": "^8.0.1",
+    "electron-builder": "^22.6.0"
+  },
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "build": {
+   "appId": "com.electron.messenger",
+   "productName": "Electron Messenger",
+   "win": {
+     "target": "nsis",
+     "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    }
+  }
+}

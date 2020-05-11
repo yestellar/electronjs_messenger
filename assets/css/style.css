@@ -1,0 +1,506 @@
+:root {
+
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  padding: 0px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: Arial;
+  background-color: #232F3E;
+}
+
+body #app {
+  width: 100%;
+  background: #ccc;
+  position: relative;
+}
+
+
+body #app header {
+  height: 50px;
+  display: flex;
+  color: #fff;
+  background: #232F3E;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+}
+
+body #app header .left-bar {
+  width: 300px;
+  position: relative;
+  background: #232F3E;
+}
+
+body #app header .left-bar:hover .burder-button::after {
+  transition: 0.3s;
+  top: 6px;
+}
+
+body #app header .left-bar:hover .burder-button::before {
+  transition: 0.3s;
+  bottom: 6px;
+}
+
+body #app header .left-bar.active .burder-button {
+  background: rgba(0, 0, 0, 0);
+  transition: 0.3s;
+}
+
+body #app header .left-bar.active .burder-button::after {
+  transform: rotate(45deg);
+  top: 0;
+}
+
+body #app header .left-bar.active .burder-button::before {
+  transform: rotate(-45deg);
+  bottom: 0;
+}
+
+body #app header .left-bar.active ul.menu {
+  transform: none;
+}
+
+body #app header .left-bar .burder-button {
+  height: 2px;
+  width: 18px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 25px;
+  transition: 0.3s;
+}
+
+body #app header .left-bar .burder-button::after, body #app header .left-bar .burder-button::before {
+  content: "";
+  height: 2px;
+  width: 18px;
+  background: #fff;
+  position: absolute;
+  transition: 0.3s;
+}
+
+body #app header .left-bar .burder-button::after {
+  top: 5px;
+}
+
+body #app header .left-bar .burder-button::before {
+  bottom: 5px;
+}
+
+body #app header .left-bar ul.menu {
+  background: #fff;
+  border-width: 0 1px 1px 1px;
+  border-style: solid;
+  border-color: rgba(15, 60, 96, 0.2);
+  position: absolute;
+  top: 50px;
+  color: #080b11;
+  width: calc(100% - 2px);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-100%);
+  z-index: -1;
+  transition: transform 0.1s linear;
+}
+
+body #app header .left-bar ul.menu li {
+  height: 42px;
+  line-height: 42px;
+  padding: 0 15px;
+  display: flex;
+  align-items: baseline;
+}
+
+body #app header .left-bar ul.menu li:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+body #app header .left-bar ul.menu li .ico {
+  height: 100%;
+  width: 30px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+}
+
+body #app header .left-bar .project-name {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 45px;
+}
+
+body #app header .right-bar {
+  height: 100%;
+  display: flex;
+  flex: 1 auto;
+}
+
+body #app header .right-bar .info-part {
+  display: flex;
+  flex: 1 auto;
+  align-items: center;
+  justify-content: center;
+}
+
+body #app header .right-bar .info-part .title {
+
+}
+
+body #app header .right-bar .info-part .sub-info {
+  color: #b9cfe3;
+  font-size: 14px;
+}
+
+body #app header .right-bar .info-part .sub-info:hover {
+  color: #fff;
+}
+
+body #app header .right-bar .tools .search:hover, body #app header .right-bar .tools .other:hover {
+  background: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+body #app main {
+  display: flex;
+  height: calc(100vh - 60px);
+  padding-top: 50px;
+}
+
+body #app main .left-list-bar {
+  width: 300px;
+  background: #f2f2f2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body #app main .left-list-bar .search {
+  position: relative;
+  height: 40px;
+}
+
+body #app main .left-list-bar .search input {
+  width: calc(100% - 60px);
+  padding: 0px 26px 0px 45px;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  height: 28px;
+  background: transparent;
+  height: 100%;
+}
+
+body #app main .left-list-bar .search input:focus {
+  background: #fff;
+  outline: none;
+}
+
+body #app main .left-list-bar .search .fa-search {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+  color: #ccc;
+}
+
+body #app main .left-list-bar .dialog-list {
+  flex: 1;
+  overflow-y: scroll;
+}
+
+body #app main .left-list-bar .dialog-list::-webkit-scrollbar {
+  width: 2px;
+  position: absolute;
+}
+
+body #app main .left-list-bar .dialog-list::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+body #app main .left-list-bar .dialog-list::-webkit-scrollbar-thumb {
+  background: #fff;
+}
+
+body #app main .left-list-bar .dialog-list::-webkit-scrollbar-thumb:hover {
+  background: #3c78a5;
+}
+
+body #app main .left-list-bar .dialog-list:hover::-webkit-scrollbar-thumb {
+  background: #6c9fc5;
+}
+
+body #app main .left-list-bar .dialog-list .dialog {
+  height: calc(60px - 10px);
+  padding: 5px 15px;
+  background: transparent;
+  color: #232F3E;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+body #app main .left-list-bar .dialog-list .dialog:hover {
+  cursor: pointer;
+  background-color: #fff;
+}
+
+body #app main .left-list-bar .dialog-list .dialog .avatar {
+  display: inline-block;
+  height: 100%;
+  width: 50px;
+  margin-right: 15px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex: none;
+  position: relative;
+}
+
+body #app main .left-list-bar .dialog-list .dialog .avatar i {
+  font-size: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+body #app main .left-list-bar .dialog-list .dialog .main-info {
+  flex: 1 auto;
+  overflow: hidden;
+}
+
+body #app main .left-list-bar .dialog-list .dialog .main-info .name {
+  padding: 0 0 5px 0;
+  font-size: 14px;
+}
+
+body #app main .left-list-bar .dialog-list .dialog .main-info .pre-view {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+body #app main .left-list-bar .dialog-list .dialog .time {
+  font-size: 12px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #bbb;
+}
+
+body #app main .left-list-bar .dialog-list .dialog.active {
+  background: #232F3E;
+  color: #fff;
+}
+
+body #app main .content {
+  flex: 1 auto;
+  height: calc(100% - 40px);
+}
+
+body #app main .dialog-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  position: relative;
+}
+
+body #app main .dialog-container .messages-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1 auto;
+  background: #f2f2f2;
+  box-shadow: inset 0px 0px 10px -6px rgba(0,0,0,0.75);
+  padding-bottom: 5px;
+  box-sizing: border-box;
+}
+
+body #app main .dialog-container::-webkit-scrollbar {
+  width: 10px;
+  position: absolute;
+  background-color: #F5F5F5;
+}
+
+body #app main .dialog-container::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
+}
+
+body #app main .dialog-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #aaa;
+}
+
+body #app main .dialog-container::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+body #app main .dialog-container::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(left, #22ADD4, #1E98BA);
+}
+
+body #app main .dialog-container .start-message {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #232f3e;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 15px;
+  padding: 5px 10px;
+  padding-bottom: 6px;
+  white-space: nowrap;
+  color: #fff;
+}
+
+
+body #app main .dialog-container .messages-container .message {
+  padding: 5px 10px;
+  display: flex;
+}
+
+body #app main .dialog-container .messages-container .message .texts-container {
+  /* background: #aeb4b8; */
+  flex: 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+body #app main .dialog-container .messages-container .message .texts-container .text-container {
+  display: flex;
+  padding: 6px 10px;
+  font-size: 15px;
+  line-height: 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+body #app main .dialog-container .messages-container .message.self .texts-container .text-container {
+  background-color: #232F3E;
+  color: #fff;
+}
+
+body #app main .dialog-container .messages-container .message.interlocutor .texts-container .text-container {
+  background-color: #fff;
+}
+
+
+
+body #app main .dialog-container .messages-container .message .texts-container .text-container:last-child {
+  margin-bottom: 0px;
+}
+
+body #app main .dialog-container .messages-container .message .texts-container .text-container .text {
+  white-space: pre-wrap;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+body #app main .dialog-container .messages-container .message .texts-container .text-container .time {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 10px;
+  font-size: 12px;
+  line-height: 12px;
+  color: #bbb;
+}
+
+body #app main .dialog-container .messages-container .message.self {
+  /* background: #a8ada7; */
+}
+
+body #app main .dialog-container .messages-container .message.self .texts-container {
+  margin-left: 50px;
+  align-items: flex-end;
+}
+
+body #app main .dialog-container .messages-container .message.interlocutor {
+  /* background: #8b8685; */
+}
+
+body #app main .dialog-container .messages-container .message.interlocutor .avatar-container {
+  width: 50px;
+  padding: 5px;
+  box-sizing: border-box;
+  flex: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+body #app main .dialog-container .messages-container .message.interlocutor .avatar-container .avatar {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+body #app main .dialog-container .messages-container .message.interlocutor .avatar-container .avatar i {
+  font-size: 26px;
+}
+
+body #app main .content .panel-container {
+  height: 40px;
+  background: #bbb;
+}
+
+body #app main .content .panel-container .input-container {
+  height: 100%;
+  position: relative;
+}
+
+body #app main .content .panel-container .input-container form {
+  height: 100%;
+}
+
+body #app main .content .panel-container .input-container input {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 20px;
+  border: none;
+}
+
+body #app main .content .panel-container .input-container .button-send-message {
+  position: absolute;
+  right: 5px;
+  height: 100%;
+  width: 40px;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  background-color: transparent;
+}
+body #app main .content .panel-container .input-container .button-send-message .fa-paper-plane {
+  transition: transform .1s linear;
+}
+
+body #app main .content .panel-container .input-container .button-send-message:hover .fa-paper-plane {
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+
+body #app main .content .panel-container .input-container input:focus {
+  outline: none;
+}

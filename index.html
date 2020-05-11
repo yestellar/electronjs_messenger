@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Messenger - electron-based app</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+
+    <header>
+      <div class="left-bar">
+        <div class="project-name">
+          {{ name }}
+        </div>
+      </div>
+      <div class="right-bar">
+        <div class="info-part">
+          <span class="title">{{ activeDialog === undefined ? loggedUserName : activeDialog }}</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="left-list-bar">
+        <div class="search">
+          <input type="text" placeholder="Search">
+          <i class="fas fa-search"></i>
+        </div>
+        <div class="dialog-list">
+          <!-- Friend list -->
+          <div
+            v-for="(dialog, index) in dialogs"
+            class="dialog"
+            :key="index"
+            :class="{active : dialog.friend == activeDialog}"
+            @click="setActiveDialog(dialog.friend)">
+            <div class="avatar">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="main-info">
+              <div class="name">
+                {{ dialog.friend }}
+              </div>
+              <div class="pre-view">
+                <span v-if="dialog.lastMessage.author === loggedUserName">You: </span>
+                {{ dialog.lastMessage.msg }}
+              </div>
+            </div>
+            <div class="time">
+              {{ getTimeFromMessage(dialog.lastMessage) }}
+            </div>
+          </div>
+          <!-- End of Friend list -->
+        </div>
+      </div>
+      <div class="content">
+
+        <div class="dialog-container">
+          <div class="messages-container" id="messages_container">
+            <!-- Messages list -->
+            <div class="message" :class="{self: message_container.author === loggedUserName, interlocutor: message_container.author !== loggedUserName}" v-for="message_container in message_containers" >
+              <div v-if="message_container.author !== loggedUserName" class="avatar-container">
+                <div class="avatar">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+              </div>
+              <div class="texts-container">
+                <div class="text-container">
+                  <div class="text">{{ message_container.msg }}</div>
+                  <div class="time">{{ getTimeFromMessage(message_container) }}</div>
+                </div>
+              </div>
+            </div>
+            <!-- End of messages list -->
+          </div>
+          <div v-if="activeDialog === undefined" class="start-message">Please select a chat to start messaging</div>
+        </div>
+        <div class="panel-container">
+          <div class="input-container">
+            <form @submit.prevent="sendMessage">
+              <!-- Input -->
+              <input
+                id="message_input"
+                type="text"
+                placeholder="Type something to send..."
+                v-model="messageInput"
+                :disabled="activeDialog === undefined">
+              <button class="button-send-message" type="submit">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://kit.fontawesome.com/affd1932c9.js" crossorigin="anonymous"></script>
+<script class="data-displaying">
+
+    const electron = require('electron');
+    const ipc = electron.ipcRenderer;
+    const axios = require('axios');
+
+    let vue = new Vue({
+      el: '#app',
+      data: {
+        loggedUserToken: undefined,
+        loggedUserName: undefined,
+        name: "Electron Messenger",
+        activeDialog: undefined,
+        dialogs: undefined,
+        message_containers: undefined,
+        messageInput: ""
+      },
+      methods: {
+        getDialogs: function () {
+
+          //             nagłówek autoryzacji ma strukturę: Bearer + token
+          axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.loggedUserToken;
+
+          // Wysyłanie żądania GET do bazy danych i przetwarzanie odpowiedzi
+          axios.get("http://localhost:8000/friends?preview=true")
+          .then((response) => {
+            // w razie sukcesu przypisać zawartość odpowiedzi do zmiennej "dialogs"
+            this.dialogs = response.data.list;
+          })
+          .catch(function (error) {
+            // jeśli wystąpi błąd, wyświetlić w konsoli
+            console.log(error);
+          })
+
+        },
+        setActiveDialog(login) {
+          const self = this;
+          this.activeDialog = login;
+          this.getMessageContainers(login);
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          })
+          this.scrollToBottom();
+
+          document.getElementById('message_input').focus();
+        },
+        getMessageContainers: function (login) {
+          // Sending GET requset to database and getting friendList
+          axios.get(`http://localhost:8000/dialogs/show/${login}`)
+          .then((response) => {
+            // handle success
+            this.message_containers = response.data.result.messages;
+            this.$nextTick(() => {
+              this.scrollToBottom();
+            })
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+        },
+        getTimeFromMessage: function(message) {
+          let date = new Date(message.date);
+          let hours = date.getHours();
+          let minutes = date.getMinutes();
+          if (minutes < 10) minutes = "0" + minutes;
+          return hours + ":" + minutes;
+        },
+        sendMessage: function() {
+          if (this.messageInput === "") return;
+
+          let msg = this.messageInput;
+          this.messageInput = "";
+
+          axios.post(`http://localhost:8000/dialogs/send/${this.activeDialog}`, {
+            msg
+          })
+          .then((response) => {
+            // handle success
+            this.getMessageContainers(this.activeDialog);
+          })
+          .catch(function (error) {
+            // handle error
+            console.log(error);
+          })
+        },
+        scrollToBottom: function() {
+          let element = document.getElementById("messages_container");
+          element.scrollIntoView({block: "end"});
+        }
+      },
+      mounted() {
+
+        ipc.on('set-logged-user', (event, arg) => {
+          // ... proces ustalenia zalogowanego użytkownika
+          let users = {
+            "vonrims17": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InZvbnJpbXMxNyIsImlhdCI6MTU4Njg1NzE2MiwiZXhwIjoxNTg5NDQ5MTYyfQ.ImQrqY-tmUc5jdoV3mE4HoJIb3EE_vzhd1Udj7JArHk",
+            "podarokek": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6InBvZGFyb2tlayIsImlhdCI6MTU4Njg1NzIwOCwiZXhwIjoxNTg5NDQ5MjA4fQ.FfW60c2o3f6lcji08qB9JFz7ILuxJSPJhFKOq1EOCTE"
+          }
+
+          this.loggedUserToken = users[arg];
+          this.loggedUserName = arg;
+
+          if (this.loggedUserToken !== undefined) {
+            setInterval(() => {
+              this.getDialogs(() => {
+                if (this.activeDialog !== undefined) this.getMessageContainers(this.activeDialog)
+              });
+            }, 200)
+          }
+        });
+
+      }
+    });
+</script>
+</body>
+</html>

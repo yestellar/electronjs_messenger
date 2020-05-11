@@ -1,0 +1,94 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #232F3E;
+}
+
+.welcome-header {
+  font-size: 25px;
+  text-align: center;
+  letter-spacing: 1px;
+  font-weight: 300;
+  color: #f2f2f2;
+  padding: 10px 0;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.form {
+  width: 380px;
+  margin: 15px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form .user-select-label {
+  color: #f2f2f2;
+  font-weight: 300;
+  letter-spacing: 1px;
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 5px 0 10px;
+  font-size: 16px;
+  line-height: 16px;
+  position: relative;
+}
+
+.form .user-select-label::before {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 1px;
+  background-color: #f2f2f2;
+  position: absolute;
+  top: 12px;
+  left: 0;
+}
+
+.form .user-select-label::after {
+  content: '';
+  display: block;
+  width: 100px;
+  height: 1px;
+  background-color: #f2f2f2;
+  position: absolute;
+  top: 12px;
+  right: 0;
+}
+
+.form .user-select {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 5px 10px;
+  font-size: 16px;
+  font-weight: 500;
+  outline-color: #9feaf9;
+}
+
+.form .enter-button {
+  margin-top: 15px;
+  width: 180px;
+  background-color: transparent;
+  color: #f2f2f2;
+  border: none;
+  outline: none;
+  border: 1px solid #f2f2f2;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 400;
+  padding: 5px 20px;
+  transition: all .1s linear;
+}
+
+.form .enter-button:hover {
+  background-color: #f2f2f2;
+  border-color: transparent;
+  color: #232F3E;
+  cursor: pointer;
+}
